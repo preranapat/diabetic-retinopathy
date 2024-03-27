@@ -14,7 +14,7 @@ import time
 def predict(model_name, img):
  results = img_to_array(img)
 arr = results.reshape(-1, 256, 256, 3)
- if model_name == "My_convolution_layer_model":
+if model_name == "My_convolution_layer_model":
   new_model=load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel.h5')
  elifmodel_name == "Eye net model":
   new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
