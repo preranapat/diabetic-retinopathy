@@ -28,26 +28,26 @@ elif model_name == "Transfer learning eye net":
  # Now predict using the trained RF model.
  # prediction_RF = model1.predict(X_test_features)
  if results == 0:
- x = "diabetic"
+  x = "diabetic"
  else:
- x = "no_diabetic"
+  x = "no_diabetic"
  return x
 def get_model():
  return simple_unet_model(patch_size, patch_size, 1)
 ##Exudates segmentation
-def prediction(model, image, patch_size):
-segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
-patch_num = 1
-my_bar = st.progress(0)
-86
+ def prediction(model, image, patch_size):
+  segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
+  patch_num = 1
+  my_bar = st.progress(0)
+
  for i in range(0, image.shape[0], patch_size): # Steps of 256
- for j in range(0, image.shape[1], patch_size): # Steps of 256
+  for j in range(0, image.shape[1], patch_size): # Steps of 256
  # print(i, j)
-single_patch = image[i:i + patch_size, j:j + patch_size]
-single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
-single_patch_shape = single_patch_norm.shape[:2]
-single_patch_input = np.expand_dims(single_patch_norm, 0)
-single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
+   single_patch = image[i:i + patch_size, j:j + patch_size]
+   single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
+   single_patch_shape = single_patch_norm.shape[:2]
+   single_patch_input = np.expand_dims(single_patch_norm, 0)
+   single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
 segm_img[i:i + single_patch_shape[0], j:j + single_patch_shape[1]] += 
 cv2.resize(single_patch_prediction,
 single_patch_shape[::-1])
