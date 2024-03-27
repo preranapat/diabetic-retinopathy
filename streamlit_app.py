@@ -15,23 +15,16 @@ def predict(model_name, img):
  results = img_to_array(img)
 arr = results.reshape(-1, 256, 256, 3)
  if model_name == "My_convolution_layer_model":
-new_model = 
-load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymod
-el.h5')
-elifmodel_name == "Eye net model":
-new_model = load_model(
- 'C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
-elifmodel_name == "Transfer learning new model":
-85
-new_model = 
-load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymod
-el_transfer.h5')
-elifmodel_name == "Transfer learning eye net":
-new_model = load_model(
- 
-'C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
+  new_model =load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel.h5')
+ elif model_name == "Eye net model":
+  new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
+ elif model_name == "Transfer learning new model":
+
+  new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymodel_transfer.h5')
+ elif model_name == "Transfer learning eye net":
+  new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
  # arr = results.reshape((1,)+results.shape)
- results = new_model.predict(arr)
+  results = new_model.predict(arr)
  # Now predict using the trained RF model.
  # prediction_RF = model1.predict(X_test_features)
  if results == 0:
