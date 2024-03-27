@@ -26,11 +26,11 @@ elif model_name == "Transfer learning eye net":
   results = new_model.predict(arr)
  # Now predict using the trained RF model.
  # prediction_RF = model1.predict(X_test_features)
- if results == 0:
-  x = "diabetic"
- else:
-  x = "no_diabetic"
- return x
+  if results == 0:
+   x = "diabetic"
+  else:
+   x = "no_diabetic"
+  return x
 def get_model():
  return simple_unet_model(patch_size, patch_size, 1)
 ##Exudates segmentation
