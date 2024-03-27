@@ -120,7 +120,7 @@ def get_image(model_name, name):
             # Large image
             st.balloons()
             st.image(segmented_image)
-         nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
+            nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
 
    if nav_bar == "Home":
     st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
@@ -138,9 +138,9 @@ def get_image(model_name, name):
                                             "Transfer learning eye net"))
   else:
         model_name = st.sidebar.selectbox("Select the model", ("Unet", "Else"))
-    patch_size = st.sidebar.selectbox("Select the patch size for segmentation", (256, 512, 1024))
-    st.text(model_name)
-    get_image(model_name, name)
+        patch_size = st.sidebar.selectbox("Select the patch size for segmentation", (256, 512, 1024))
+        st.text(model_name)
+        get_image(model_name, name)
 
   if nav_bar == "About":
     st.header(" Hi, I am Hridoy Biswas and the main developer of the apps.")
