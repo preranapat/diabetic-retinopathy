@@ -87,12 +87,12 @@ def get_image(model_name, name):
         st.image(uploaded_img2)
         button = st.button("Click to predict the classification results")
     if button:
-    prediction = predict(model_name, uploaded_img2)
-    st.write("# The Prediction is:")
-    st.write(prediction)
+        prediction = predict(model_name, uploaded_img2)
+        st.write("# The Prediction is:")
+        st.write(prediction)
     # predict
     else:
-     image = st.sidebar.file_uploader(label="Select a retinal fundus image", type=['jpg', 'jpeg', 'png'])
+        image = st.sidebar.file_uploader(label="Select a retinal fundus image", type=['jpg', 'jpeg', 'png'])
     # st.warning("The image should be divisible by the path size")
     if image is not None:
         image_data = image.read()
