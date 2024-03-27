@@ -32,16 +32,12 @@ model.load_model('xgb_model.json')
 # Define the prediction function
 def predict(carat, cut, color, clarity, depth, table, x, y, z):
     #Predicting the price of the carat
-    if cut == 'Fair':
+    if cut == 'Low':
         cut = 0
-    elif cut == 'Good':
+    elif cut == 'Medium':
         cut = 1
-    elif cut == 'Very Good':
+    elif cut == 'High':
         cut = 2
-    elif cut == 'Premium':
-        cut = 3
-    elif cut == 'Ideal':
-        cut = 4
 
     if color == 'J':
         color = 0
