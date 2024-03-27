@@ -41,21 +41,21 @@ def prediction(model, image, patch_size):
  for i in range(0, image.shape[0], patch_size): # Steps of 256
   for j in range(0, image.shape[1], patch_size): # Steps of 256
  # print(i, j)
-single_patch = image[i:i + patch_size, j:j + patch_size]
-single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
-single_patch_shape = single_patch_norm.shape[:2]
-single_patch_input = np.expand_dims(single_patch_norm, 0)
-single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
-segm_img[i:i + single_patch_shape[0], j:j + single_patch_shape[1]] +=
-cv2.resize(single_patch_prediction,
-single_patch_shape[::-1])
+   single_patch = image[i:i + patch_size, j:j + patch_size]
+   single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
+   single_patch_shape = single_patch_norm.shape[:2]
+   single_patch_input = np.expand_dims(single_patch_norm, 0)
+   single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
+   segm_img[i:i + single_patch_shape[0], j:j + single_patch_shape[1]] +=
+   cv2.resize(single_patch_prediction,
+   single_patch_shape[::-1])
  # print("Finished processing patch number ", patch_num, " at position ", i, j)
-patch_num += 1
+   patch_num += 1
  # st.write(patch_num)
-time.sleep(0.1)
+   time.sleep(0.1)
  # whilepatch_num<= 100:
  # my_bar.progress(patch_num + 1)
- return segm_img
+   return segm_img
 def predictions(file, model, patch_size):
 large_image = cv2.imread(file)
 large_image=cv2.cvtColor(large_image,cv2.COLOR_BGR2GRAY)
