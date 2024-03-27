@@ -123,31 +123,31 @@ def get_image(model_name, name):
             nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
 
    if nav_bar == "Home":
-    st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
-    st.markdown("*")
-    st.write("""
-    # Model
-    Which model you want to work on?
-    """)
-    name = st.sidebar.selectbox("Select Dataset", ("Diabetic retinopathy classification", "segmentation"))
-    st.text(name)
-    st.write("Model")
+            st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
+            st.markdown("*")
+            st.write("""
+            # Model
+            Which model you want to work on?
+            """)
+            name = st.sidebar.selectbox("Select Dataset", ("Diabetic retinopathy classification", "segmentation"))
+            st.text(name)
+            st.write("Model")
   if name == "Diabetic retinopathy classification":
-        model_name = st.sidebar.selectbox("Select the model",
+            model_name = st.sidebar.selectbox("Select the model",
                                            ("My_convolution_layer_model", "Eye net", "Transfer learning new model",
                                             "Transfer learning eye net"))
   else:
-        model_name = st.sidebar.selectbox("Select the model", ("Unet", "Else"))
-        patch_size = st.sidebar.selectbox("Select the patch size for segmentation", (256, 512, 1024))
-        st.text(model_name)
-        get_image(model_name, name)
+          model_name = st.sidebar.selectbox("Select the model", ("Unet", "Else"))
+          patch_size = st.sidebar.selectbox("Select the patch size for segmentation", (256, 512, 1024))
+          st.text(model_name)
+          get_image(model_name, name)
 
   if nav_bar == "About":
-    st.header(" Hi, I am Hridoy Biswas and the main developer of the apps.")
-    st.markdown("*")
-    st.text(" # Ihis is the app for the classification of the diabetic retinopathy."
+          st.header(" Hi, I am Hridoy Biswas and the main developer of the apps.")
+          st.markdown("*")
+          st.text(" # Ihis is the app for the classification of the diabetic retinopathy."
             "# I used three deep learning model and developed one of my model.You can use all three models and predict ")
-    st.text(" The segmentation model is u-net model.YOu can segment the exudat")
+          st.text(" The segmentation model is u-net model.YOu can segment the exudat")
          
 
 
