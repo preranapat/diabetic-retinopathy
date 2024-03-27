@@ -39,7 +39,7 @@ def prediction(model, image, patch_size):
  patch_num = 1
  my_bar = st.progress(0)
  for i in range(0, image.shape[0], patch_size): # Steps of 256
- for j in range(0, image.shape[1], patch_size): # Steps of 256
+  for j in range(0, image.shape[1], patch_size): # Steps of 256
  # print(i, j)
 single_patch = image[i:i + patch_size, j:j + patch_size]
 single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
