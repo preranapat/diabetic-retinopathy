@@ -23,7 +23,7 @@ elif model_name == "Transfer learning new model":
 elif model_name == "Transfer learning eye net":
   new_model = load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
  # arr = results.reshape((1,)+results.shape)
- results = new_model.predict(arr)
+  results = new_model.predict(arr)
  # Now predict using the trained RF model.
  # prediction_RF = model1.predict(X_test_features)
  if results == 0:
