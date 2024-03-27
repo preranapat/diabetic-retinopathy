@@ -86,13 +86,13 @@ def get_image(model_name, name):
         st.write(image.name)
         st.image(uploaded_img2)
         button = st.button("Click to predict the classification results")
-     if button:
+    if button:
     prediction = predict(model_name, uploaded_img2)
     st.write("# The Prediction is:")
     st.write(prediction)
     # predict
-else:
-    image = st.sidebar.file_uploader(label="Select a retinal fundus image", type=['jpg', 'jpeg', 'png'])
+    else:
+     image = st.sidebar.file_uploader(label="Select a retinal fundus image", type=['jpg', 'jpeg', 'png'])
     # st.warning("The image should be divisible by the path size")
     if image is not None:
         image_data = image.read()
@@ -108,7 +108,7 @@ else:
         
         button = st.button("Click to predict the segmentation results")
         
-        if button:
+    if button:
             image_path = 'C:/Users/16189/Documents/hyperspectral/directory/' + image.name
             model = get_model()
             model.load_weights('C:/Users/16189/Documents/hyperspectral/retinal_exudates_segmentation2.h5')
@@ -122,7 +122,7 @@ else:
             st.image(segmented_image)
          nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
 
-if nav_bar == "Home":
+   if nav_bar == "Home":
     st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
     st.markdown("*")
     st.write("""
@@ -132,17 +132,17 @@ if nav_bar == "Home":
     name = st.sidebar.selectbox("Select Dataset", ("Diabetic retinopathy classification", "segmentation"))
     st.text(name)
     st.write("Model")
-    if name == "Diabetic retinopathy classification":
+  if name == "Diabetic retinopathy classification":
         model_name = st.sidebar.selectbox("Select the model",
                                            ("My_convolution_layer_model", "Eye net", "Transfer learning new model",
                                             "Transfer learning eye net"))
-    else:
+  else:
         model_name = st.sidebar.selectbox("Select the model", ("Unet", "Else"))
     patch_size = st.sidebar.selectbox("Select the patch size for segmentation", (256, 512, 1024))
     st.text(model_name)
     get_image(model_name, name)
 
-if nav_bar == "About":
+  if nav_bar == "About":
     st.header(" Hi, I am Hridoy Biswas and the main developer of the apps.")
     st.markdown("*")
     st.text(" # Ihis is the app for the classification of the diabetic retinopathy."
