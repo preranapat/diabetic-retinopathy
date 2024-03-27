@@ -1,96 +1,152 @@
-
-Conversation opened. 1 read message.
-
-Skip to content
-Using Gmail with screen readers
-pragyan.ai.school@gmail.com 
-16 of 19
-DataSet - Code Base
-Inbox
-
-Pragyan AI and DS School <pragyan.ai.school@gmail.com>
-Attachments
-Jun 11, 2023, 12:29 PM
-to akshatabiradars2003, ekatagarje1, shreyajoshi794, pratikshakulkarni259, bhimashankar7770, jiraya7373, supriya.shetti189, amruta16bca, sangithm070, savitaravindra57, bhaskarsutar24, maheshchintuu, vaishmath347, kbpatil6346, Rashmi, shwetaramakrishna2001, amannidgundi16, vijayashreedp23, srikesh.pujar2000, me, Sampada21050, kostineeta, madhukeshavpanchal, nidhipnayak2001, mosalagigayatri, bharathjmathpati
-
-
- 6 Attachments
-  •  Scanned by Gmail
-pragyan.ai.school@gmail.com. Press tab to insert.
-import xgboost as xgb
 import streamlit as st
-import pandas as pd
+import numpy as np
+from PIL import Image
+from keras.engine.saving import load_model
+from keras.preprocessing.image import load_img, img_to_array
+from io import BytesIO
+import os
+import cv2
+from keras.utils import normalize
+from unet import simple_unet_model
+import time
+#frompre_processing import my_PreProc
+#diabetic retinopathy classifications
+def predict(model_name, img):
+ results = img_to_array(img)
+arr = results.reshape(-1, 256, 256, 3)
+ if model_name == "My_convolution_layer_model":
+new_model = 
+load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymod
+el.h5')
+elifmodel_name == "Eye net model":
+new_model = load_model(
+ 'C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet.h5')
+elifmodel_name == "Transfer learning new model":
 
-#Loading up the Regression model we created
-model = xgb.XGBRegressor()
-model.load_model('xgb_model.json')
+new_model = 
+load_model('C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_mymod
+el_transfer.h5')
+elifmodel_name == "Transfer learning eye net":
+new_model = load_model(
+ 
+'C:/Users/16189\Documents/hyperspectral/retina_augmented_model__new_eyenet_transfer2.h5')
+ # arr = results.reshape((1,)+results.shape)
+ results = new_model.predict(arr)
+ # Now predict using the trained RF model.
+ # prediction_RF = model1.predict(X_test_features)
+ if results == 0:
+ x = "diabetic"
+ else:
+ x = "no_diabetic"
+ return x
+def get_model():
+ return simple_unet_model(patch_size, patch_size, 1)
+##Exudates segmentation
+def prediction(model, image, patch_size):
+segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
+patch_num = 1
+my_bar = st.progress(0)
 
-#Caching the model for faster loading
-@st.cache
+ for i in range(0, image.shape[0], patch_size): # Steps of 256
+ for j in range(0, image.shape[1], patch_size): # Steps of 256
+ # print(i, j)
+single_patch = image[i:i + patch_size, j:j + patch_size]
+single_patch_norm = np.expand_dims(normalize(np.array(single_patch), axis=1), 2)
+single_patch_shape = single_patch_norm.shape[:2]
+single_patch_input = np.expand_dims(single_patch_norm, 0)
+single_patch_prediction = (model.predict(single_patch_input)[0, :, :, 0] > 0.5).astype(np.uint8)
+segm_img[i:i + single_patch_shape[0], j:j + single_patch_shape[1]] += 
+cv2.resize(single_patch_prediction,
+single_patch_shape[::-1])
+ # print("Finished processing patch number ", patch_num, " at position ", i, j)
+patch_num += 1
+ # st.write(patch_num)
+time.sleep(0.1)
+ # whilepatch_num<= 100:
+ # my_bar.progress(patch_num + 1)
+ return segm_img
+def predictions(file, model, patch_size):
+large_image = cv2.imread(file)
+large_image=cv2.cvtColor(large_image,cv2.COLOR_BGR2GRAY)
+large_image = cv2.resize(large_image, (2048, 2048))
+segmented_image = prediction(model, large_image, patch_size)
+ return segmented_image
 
+def get_image(model_name, name):
+ if name == "Diabetic retinopathy classification":
+ image = st.sidebar.file_uploader(label="Select an retinal fundus image", type=['jpg', 'jpeg', 
+'png'])
+ if image is not None:
+image_data = image.read()
+ # uploaded_img=load_img(image_data, target_size=(256, 256))
+ uploaded_img2 = Image.open(BytesIO(image_data))
+ uploaded_img2 = uploaded_img2.resize((256, 256))
+st.write(image.name)
+ # uploaded_img3=cv2.resize(uploaded_img2,(256,256))
+st.image(uploaded_img2)
+ button = st.button("Click to predict the classification results")
+ if button:
+ prediction = predict(model_name, uploaded_img2)
+st.write("# The Prediction is:")
+st.write(prediction)
+ # predict
+ else:
+ image = st.sidebar.file_uploader(label="Select an retinal funcdus image", type=['jpg', 'jpeg', 
+'png'])
+ # st.warning("The image should be divisible by the path size")
+ if image is not None:
+image_data = image.read()
+ # uploaded_img=load_img(image_data, target_size=(256, 256))
+ uploaded_img2 = Image.open(BytesIO(image_data))
 
-# Define the prediction function
-def predict(carat, cut, color, clarity, depth, table, x, y, z):
-    #Predicting the price of the carat
-    if cut == 'Low':
-        cut = 0
-    elif cut == 'Medium':
-        cut = 1
-    elif cut == 'High':
-        cut = 2
+st.write(image.name)
+st.image(uploaded_img2)
+new_path = 'C:/Users/16189/Documents/hyperspectral/directory'
+ # saving image file
+ with open(os.path.join(new_path, image.name, ), "wb") as f:
+f.write(image.getbuffer())
+st.success('File saved')
+ button=st.button("Click to predict the segmentation results")
+ if button:
+image_path = 'C:/Users/16189/Documents/hyperspectral/directory/' + image.name
+ model = get_model()
+ 
+model.load_weights('C:/Users/16189/Documents/hyperspectral/retinal_exudates_segmentation2.
+h5')
+ import time
+st.header("Segmented Image")
+segmented_image = predictions(image_path, model, patch_size)
+ with open(os.path.join(new_path, "segmented"+image.name, ), "wb") as f:
+f.write(image.getbuffer())
+ # Large image
+st.balloons()
+st.image(segmented_image)
+nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
+if nav_bar == "Home":
 
-    if color == 'J':
-        color = 0
-    elif color == 'I':
-        color = 1
-    elif color == 'H':
-        color = 2
-    elif color == 'G':
-        color = 3
-    elif color == 'F':
-        color = 4
-    elif color == 'E':
-        color = 5
-    elif color == 'D':
-        color = 6
-    
-    if clarity == 'I1':
-        clarity = 0
-    elif clarity == 'SI2':
-        clarity = 1
-    elif clarity == 'SI1':
-        clarity = 2
-    elif clarity == 'VS2':
-        clarity = 3
-    elif clarity == 'VS1':
-        clarity = 4
-    elif clarity == 'VVS2':
-        clarity = 5
-    elif clarity == 'VVS1':
-        clarity = 6
-    elif clarity == 'IF':
-        clarity = 7
-    
-
-    prediction = model.predict(pd.DataFrame([[carat, cut, color, clarity, depth, table, x, y, z]], columns=['carat', 'cut', 'color', 'clarity', 'depth', 'table', 'x', 'y', 'z']))
-    return prediction
-
-
-st.title('Diamond Price Predictor')
-st.image("""https://www.thestreet.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cq_auto:good%2Cw_1200/MTY4NjUwNDYyNTYzNDExNTkx/why-dominion-diamonds-second-trip-to-the-block-may-be-different.png""")
-st.header('Enter the characteristics of the diamond:')
-carat = st.number_input('Carat Weight:', min_value=0.1, max_value=10.0, value=1.0)
-cut = st.selectbox('Cut Rating:', ['Fair', 'Good', 'Very Good', 'Premium', 'Ideal'])
-color = st.selectbox('Color Rating:', ['J', 'I', 'H', 'G', 'F', 'E', 'D'])
-clarity = st.selectbox('Clarity Rating:', ['I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF'])
-depth = st.number_input('Diamond Depth Percentage:', min_value=0.1, max_value=100.0, value=1.0)
-table = st.number_input('Diamond Table Percentage:', min_value=0.1, max_value=100.0, value=1.0)
-x = st.number_input('Diamond Length (X) in mm:', min_value=0.1, max_value=100.0, value=1.0)
-y = st.number_input('Diamond Width (Y) in mm:', min_value=0.1, max_value=100.0, value=1.0)
-z = st.number_input('Diamond Height (Z) in mm:', min_value=0.1, max_value=100.0, value=1.0)
-
-if st.button('Predict Price'):
-    price = predict(carat, cut, color, clarity, depth, table, x, y, z)
-    st.success(f'The predicted price of the diamond is ${price[0]:.2f} USD')
-streamlit.py
-Displaying requirements.txt.
+st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
+st.markdown("*")
+st.write("""
+ # Model
+ Which model you want to work on?
+ """)
+ name = st.sidebar.selectbox("Select Dataset", ("Diabetic retinopathy classification", 
+"segmentation"))
+st.text(name)
+st.write("Model")
+ if name == "Diabetic retinopathy classification":
+model_name = st.sidebar.selectbox("Select the model",
+ ( "My_convolution_layer_model", "Eye net","Transfer learning new 
+model","Transfer learning eye net"))
+ else:
+model_name = st.sidebar.selectbox("Select the model", ("Unet", "Else"))
+patch_size = st.sidebar.selectbox("Select the patch size for segmentation", (256, 512,1024))
+st.text(model_name)
+get_image(model_name, name)
+if nav_bar=="About":
+st.header(" Hi, I am Hridoy Biswas and the main developer of the apps.")
+st.markdown("*")
+st.text(" # Ihis is the app for the classification of the diabetic retinopathy."
+ "# I used three deep learning model and developed one of my model.You can use all three 
+models and predict ")
+st.text(" The segmentation model is u-net model.YOu can segment the exudat
