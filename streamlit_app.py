@@ -35,9 +35,9 @@ def get_model():
  return simple_unet_model(patch_size, patch_size, 1)
 ##Exudates segmentation
 def prediction(model, image, patch_size):
-segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
-patch_num = 1
-my_bar = st.progress(0)
+ segm_img = np.zeros(image.shape[:2]) # Array with zeros to be filled with segmented values
+ patch_num = 1
+ my_bar = st.progress(0)
  for i in range(0, image.shape[0], patch_size): # Steps of 256
  for j in range(0, image.shape[1], patch_size): # Steps of 256
  # print(i, j)
