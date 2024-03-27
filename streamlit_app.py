@@ -122,7 +122,7 @@ def get_image(model_name, name):
             st.image(segmented_image)
             nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
 
-   if nav_bar == "Home":
+   if nav_bar=="Home":
             st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
             st.markdown("*")
             st.write("""
@@ -132,7 +132,7 @@ def get_image(model_name, name):
             name = st.sidebar.selectbox("Select Dataset", ("Diabetic retinopathy classification", "segmentation"))
             st.text(name)
             st.write("Model")
-  if name == "Diabetic retinopathy classification":
+  if name=="Diabetic retinopathy classification":
             model_name = st.sidebar.selectbox("Select the model",
                                            ("My_convolution_layer_model", "Eye net", "Transfer learning new model",
                                             "Transfer learning eye net"))
@@ -142,7 +142,7 @@ def get_image(model_name, name):
           st.text(model_name)
           get_image(model_name, name)
 
-  if nav_bar == "About":
+  if nav_bar=="About":
           st.header(" Hi, I am Hridoy Biswas and the main developer of the apps.")
           st.markdown("*")
           st.text(" # Ihis is the app for the classification of the diabetic retinopathy."
