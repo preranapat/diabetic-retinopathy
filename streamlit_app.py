@@ -120,7 +120,7 @@ def get_image(model_name, name):
             # Large image
             st.balloons()
             st.image(segmented_image)
-            nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
+        nav_bar = st.sidebar.radio("Navigation", ["Home", "About"])
 
    if nav_bar=="Home":
             st.title("This is the app of Detecting Diabetic Retinopathy using deep learning model")
