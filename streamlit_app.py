@@ -1,8 +1,6 @@
 #pip install streamlit
 #pip install pandas
 #pip install sklearn
-
-
 # IMPORT STATEMENTS
 import streamlit as st
 import pandas as pd
