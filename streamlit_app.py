@@ -15,7 +15,7 @@ import seaborn as sns
 
 
 
-df = pd.read_csv(![](diabetes.csv))
+df = pd.read_csv([1]('/kaggle/input/diabetic-retinopathy-2015-data-colored-resized/trainLabels.csv'))
 
 # HEADINGS
 st.title('Diabetes Checkup')
